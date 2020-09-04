@@ -1,0 +1,47 @@
+[
+    {
+        "name": "渣甸山及畢拿山",
+        "name_en": "XXX TODO",
+        "description": "渣甸山及畢拿山位於港島中至東部，於山上除可俯瞰港島北部及九龍半島外，更可遠眺大潭水塘的景致。是一條景色優美，又接近鬧市的山徑。",
+        "description_en": "XXX TODO",
+        "region": [
+            {
+                "name": "香港島",
+                "name_en": "XXX TODO"
+            }
+        ],
+        "districts": [
+            {
+                "name": "XXX TODO",
+                "name_en": "XXX TODO"
+            }
+        ],
+        "height": -1,
+        "distanceInKm": "6",
+        "difficulty": 3,
+        "durationInHour": "2.5",
+        "sceneRating": 3,
+        "recommendRating": 3,
+        "route": {
+            "starts": [],
+            "paths": [],
+            "ends": []
+        },
+        "images": [
+            {
+                "url": "TODO",
+                "credit": "TODO",
+                "sourceUrl": "TODO"
+            }
+        ],
+        "map": {
+            "geoJson": "assets/geojson/lion-rock.geojson",
+            "zoom": 14.84,
+            "center": {
+                "latitude": 22.352484,
+                "longitude": 114.185105
+            }
+        },
+        "reference": "http://www.walkonhill.com/route.php?area=1&seq=1"
+    }
+]
