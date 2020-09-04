@@ -1,4 +1,5 @@
 import scrapy
+import math
 
 
 class QuotesSpider(scrapy.Spider):
@@ -9,7 +10,12 @@ class QuotesSpider(scrapy.Spider):
     ]
 
     def parse(self, response):
-        for quote in response.css('div.quote'):
-            yield {
-                'name': quote.css('span.text::text').get(),
-            }
+        generalInfo = response.css(
+            'div.generalInfo td.right_td::text').getall()
+        yield {
+            'name': generalInfo[0],
+            'description': response.css('p.intro::text').get(),
+            'distanceInKm': generalInfo[1].replace(' 公里', '').replace('.0', ''),
+            'durationInHour': generalInfo[2].replace(' 小時', ''),
+            'difficulty': math.ceil(float(response.css('p.current_rating::text').get()))
+        }
