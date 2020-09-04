@@ -12,7 +12,7 @@
         ],
         "districts": [
             {
-                "name": "XXX TODO",
+                "name": "香港島",
                 "name_en": "XXX TODO"
             }
         ],
@@ -20,12 +20,85 @@
         "distanceInKm": "6",
         "difficulty": 3,
         "durationInHour": "2.5",
-        "sceneRating": 3,
+        "sceneRating": 4,
         "recommendRating": 3,
         "route": {
-            "starts": [],
-            "paths": [],
-            "ends": []
+            "starts": [
+                {
+                    "name": "TODO",
+                    "name_en": "TODO",
+                    "description": "巴士6, 61, 63, 66, 76黃泥涌水塘下車，小巴5",
+                    "description_en": "TODO",
+                    "marker": {
+                        "latitude": 22.281084,
+                        "longitude": 114.160931
+                    }
+                }
+            ],
+            "paths": [
+                {
+                    "name": "TODO",
+                    "name_en": "TODO",
+                    "description": "陽明山莊",
+                    "description_en": "TODO",
+                    "marker": {
+                        "latitude": 22.281084,
+                        "longitude": 114.160931
+                    }
+                },
+                {
+                    "name": "TODO",
+                    "name_en": "TODO",
+                    "description": "渣甸山",
+                    "description_en": "TODO",
+                    "marker": {
+                        "latitude": 22.281084,
+                        "longitude": 114.160931
+                    }
+                },
+                {
+                    "name": "TODO",
+                    "name_en": "TODO",
+                    "description": "畢拿山",
+                    "description_en": "TODO",
+                    "marker": {
+                        "latitude": 22.281084,
+                        "longitude": 114.160931
+                    }
+                },
+                {
+                    "name": "TODO",
+                    "name_en": "TODO",
+                    "description": "大風坳",
+                    "description_en": "TODO",
+                    "marker": {
+                        "latitude": 22.281084,
+                        "longitude": 114.160931
+                    }
+                },
+                {
+                    "name": "TODO",
+                    "name_en": "TODO",
+                    "description": "鰂魚涌",
+                    "description_en": "TODO",
+                    "marker": {
+                        "latitude": 22.281084,
+                        "longitude": 114.160931
+                    }
+                }
+            ],
+            "ends": [
+                {
+                    "name": "TODO",
+                    "name_en": "TODO",
+                    "description": "地鐵、巴士往各區",
+                    "description_en": "TODO",
+                    "marker": {
+                        "latitude": 22.281084,
+                        "longitude": 114.160931
+                    }
+                }
+            ]
         },
         "images": [
             {
