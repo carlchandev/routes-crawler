@@ -1,6 +1,10 @@
 # Hong Kong Hiking Routes Spider
 This spider crawls Hong Kong hiking routes information from website and convert them into a single json file. 
 
+## Settings
+### Wait 250ms every request
+`DOWNLOAD_DELAY = 0.25`
+
 ## Run crawler
 `scrapy crawl routes`
 
@@ -9,6 +13,19 @@ This spider crawls Hong Kong hiking routes information from website and convert 
 
 ## Output result as a json
 `rm -f trail-data.json && scrapy crawl routes -o trail-data.json`
+
+## Convert kml to geojson
+### kml2geojson lib
+`pip install kml2geojson`
+### Convert
+`k2g ./kml/13.kml ./geojson`
+
+## Get latitude and longtitude by place
+- Get API key from https://opencagedata.com/dashboard#api-keys
+- `pip install opencage`
+- Set API key as ENV variable `export OPENCAGE_API_KEY=XXX`
+- verify it by `echo $OPENCAGE_API_KEY`
+- Follow steps in https://opencagedata.com/tutorials/geocode-in-python
 
 Reference
 - https://docs.scrapy.org/en/latest/intro/tutorial.html

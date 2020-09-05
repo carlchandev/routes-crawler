@@ -4,16 +4,24 @@ import urllib.parse as urlparse
 from urllib.parse import parse_qs
 from mergedeep import merge
 from decimal import *
+import urllib.request
+import os
+from opencage.geocoder import OpenCageGeocode
+import subprocess
 
 
-class QuotesSpider(scrapy.Spider):
+class RoutesSpider(scrapy.Spider):
+    # Remember to set it first by `export OPENCAGE_API_KEY=XXXXX`
+    opencage_api_key = os.environ['OPENCAGE_API_KEY']
+    geocoder = OpenCageGeocode(opencage_api_key)
+
     name = "routes"
     start_urls = [
         'http://www.walkonhill.com/route.php?area=1&seq=1',
-        # 'http://www.walkonhill.com/route.php?area=1&seq=2',
+        'http://www.walkonhill.com/route.php?area=1&seq=2',
         # http://www.walkonhill.com/route_en.php?area=1&seq=1 // following link?
     ]
-    trail_id = 13
+    trail_id = 13  # increment by 1 every route
 # TODO: DUPEFILTER_CLASS, aviod hitting server too quickly
 
     def parse(self, response):
@@ -28,9 +36,15 @@ class QuotesSpider(scrapy.Spider):
             '7': '離島',
             '8': '離島'
         }
+
         url = response.url
         queryString = parse_qs(urlparse.urlparse(url).query)
         area = queryString['area'][0]
+
+        kmlFileUrl = response.urljoin(
+            response.css('a.kml_btn::attr(href)').get())
+        self.download_kml_and_convert_to_geojson(kmlFileUrl)
+
         paths = response.css('div#trackpointList ol li a::text').getall()
         generalInfo = response.css(
             'div.generalInfo td.right_td::text').getall()
@@ -43,13 +57,13 @@ class QuotesSpider(scrapy.Spider):
             'regions': [
                 {
                     'name': areaToRegion[area],
-                    'name_en': 'XXX TODO'
+                    'name_en': 'XXX'
                 }
             ],
             'districts': [
                 {
                     'name': response.css('p#indicator::text').get().split('\\')[2].strip(),
-                    'name_en': 'XXX TODO'
+                    'name_en': 'XXX'
                 }
             ],
             'height': 9999,  # TODO
@@ -62,7 +76,7 @@ class QuotesSpider(scrapy.Spider):
             'route': {
                 'starts': [
                     {
-                        'location': 'TODO',
+                        'location': 'Coming Soon...',
                         'location_en': 'TODO',
                         'description': response.css('div#tab-1 p::text')[0].get().strip(),
                         'description_en': 'XXX',
@@ -71,15 +85,15 @@ class QuotesSpider(scrapy.Spider):
                 'paths': [
                     {
                         'location': location.strip(),
-                        'name_en': 'XXX',
-                        'description': 'TODO',
-                        'description_en': 'TODO',
+                        'location_en': 'XXX',
+                        'description': 'Coming Soon...',
+                        'description_en': 'Coming Soon...',
                     } for location in paths
                 ],
                 'ends': [
                     {
-                        'location': 'TODO',
-                        'location_en': 'TODO',
+                        'location': 'Coming Soon...',
+                        'location_en': 'Coming Soon...',
                         'description': response.css('div#tab-1 p::text')[1].get().strip(),
                         'description_en': 'XXX',
                     }
@@ -87,21 +101,21 @@ class QuotesSpider(scrapy.Spider):
             },
             "images": [
                 {
-                    "url": f'assets/images/{self.trail_id}-001.jpg',
-                    "credit": "TODO",
-                    "sourceUrl": "TODO"
+                    "url": f'assets/images/no-data.webp',
+                    "credit": "Coming Soon...",
+                    "sourceUrl": "Coming Soon..."
                 }
             ],
             "map": {
                 "geoJson": f'assets/geojson/{self.trail_id}.geojson',
                 "zoom": 14.84,
-                "center": {
-                    "latitude": 22.352484,
-                    "longitude": 114.185105
-                }
             },
             "reference": [url]
         }
+
+        self.add_markers_for_paths(trail['route']['paths'])
+        trail['map']['center'] = trail['route']['paths'][0]['marker']
+
         englishUrl = url.replace('route.php', 'route_en.php')
         englishPageRequest = scrapy.Request(
             englishUrl, callback=self.parse_english_page)
@@ -110,6 +124,19 @@ class QuotesSpider(scrapy.Spider):
 
         self.trail_id += 1
         yield englishPageRequest
+
+    def download_kml_and_convert_to_geojson(self, kmlUrl):
+        kmlFilePath = f'./kml/{self.trail_id}.kml'
+        urllib.request.urlretrieve(kmlUrl, kmlFilePath)
+        subprocess.run(['k2g', kmlFilePath, './geojson'])
+
+    def add_markers_for_paths(self, paths):
+        for path in paths:
+            results = self.geocoder.geocode(path['location'])
+            path['marker'] = {
+                'latitude': results[0]['geometry']['lat'],
+                'longitude': results[0]['geometry']['lng'],
+            }
 
     def parse_english_page(self, response):
         area = response.meta['area']
@@ -137,18 +164,18 @@ class QuotesSpider(scrapy.Spider):
             'name_en': response.css('p#indicator::text').get().split('\\')[2].strip(),
         }
         startPath = {
-            'name_en': 'TODO',
+            'location_en': 'Coming Soon...',
             'description_en': response.css('div#tab-1 p::text')[0].get().strip(),
         }
         endPath = {
-            'name_en': 'TODO',
+            'location_en': 'Coming Soon...',
             'description_en': response.css('div#tab-1 p::text')[1].get().strip(),
         }
         paths = response.css('div#trackpointList ol li a::text').getall()
         pathList = [
             {
                 'location_en': location.strip(),
-                'description_en': 'TODO',
+                'description_en': 'Coming Soon...',
             } for location in paths
         ]
         trail = response.meta['trail']
