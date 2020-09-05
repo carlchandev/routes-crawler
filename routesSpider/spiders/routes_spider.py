@@ -3,7 +3,6 @@ import math
 import urllib.parse as urlparse
 from urllib.parse import parse_qs
 from mergedeep import merge
-from decimal import *
 import urllib.request
 import os
 from opencage.geocoder import OpenCageGeocode
@@ -17,12 +16,16 @@ class RoutesSpider(scrapy.Spider):
 
     name = "routes"
     start_urls = [
-        'http://www.walkonhill.com/route.php?area=1&seq=1',
-        'http://www.walkonhill.com/route.php?area=1&seq=2',
-        # http://www.walkonhill.com/route_en.php?area=1&seq=1 // following link?
+        *(f'http://www.walkonhill.com/route.php?area=1&seq={seq}' for seq in range(1, 14)),
+        *(f'http://www.walkonhill.com/route.php?area=2&seq={seq}' for seq in range(1, 7)),
+        *(f'http://www.walkonhill.com/route.php?area=3&seq={seq}' for seq in range(1, 23)),
+        *(f'http://www.walkonhill.com/route.php?area=4&seq={seq}' for seq in range(1, 11)),
+        *(f'http://www.walkonhill.com/route.php?area=5&seq={seq}' for seq in range(1, 11)),
+        *(f'http://www.walkonhill.com/route.php?area=6&seq={seq}' for seq in range(1, 13)),
+        *(f'http://www.walkonhill.com/route.php?area=7&seq={seq}' for seq in range(1, 16)),
+        *(f'http://www.walkonhill.com/route.php?area=8&seq={seq}' for seq in range(1, 9)),
     ]
     trail_id = 13  # increment by 1 every route
-# TODO: DUPEFILTER_CLASS, aviod hitting server too quickly
 
     def parse(self, response):
         areaToRegion = {
@@ -38,6 +41,7 @@ class RoutesSpider(scrapy.Spider):
         }
 
         url = response.url
+        self.log(f'#### Fetching {url}')
         queryString = parse_qs(urlparse.urlparse(url).query)
         area = queryString['area'][0]
 
@@ -66,7 +70,7 @@ class RoutesSpider(scrapy.Spider):
                     'name_en': 'XXX'
                 }
             ],
-            'height': 9999,  # TODO
+            'height': 9999,
             # FIXME: trim .0
             'distanceInKm': float(generalInfo[1].replace(' 公里', '')),
             'difficulty': math.ceil(float(response.css('p.current_rating::text').getall()[0])),
@@ -110,7 +114,8 @@ class RoutesSpider(scrapy.Spider):
                 "geoJson": f'assets/geojson/{self.trail_id}.geojson',
                 "zoom": 14.84,
             },
-            "reference": [url]
+            "reference": [url],
+            "status": "DRAFT"
         }
 
         self.add_markers_for_paths(trail['route']['paths'])
