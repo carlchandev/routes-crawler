@@ -71,7 +71,6 @@ class RoutesSpider(scrapy.Spider):
                 }
             ],
             'height': 9999,
-            # FIXME: trim .0
             'distanceInKm': float(generalInfo[1].replace(' 公里', '')),
             'difficulty': math.ceil(float(response.css('p.current_rating::text').getall()[0])),
             'durationInHour': float(generalInfo[2].replace(' 小時', '')),
