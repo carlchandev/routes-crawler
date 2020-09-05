@@ -1,22 +1,18 @@
 [
     {
         "name": "渣甸山及畢拿山",
-        "name_en": "XXX TODO",
+        "name_en": "Jardine's Lookout",
         "description": "渣甸山及畢拿山位於港島中至東部，於山上除可俯瞰港島北部及九龍半島外，更可遠眺大潭水塘的景致。是一條景色優美，又接近鬧市的山徑。",
-        "description_en": "XXX TODO",
-        "region": [
-            {
-                "name": "香港島",
-                "name_en": "XXX TODO"
-            }
-        ],
-        "districts": [
-            {
-                "name": "香港島",
-                "name_en": "XXX TODO"
-            }
-        ],
-        "height": -1,
+        "description_en": "Jardine's Lookout and Mount Butler are located in the middle-east of HK Island. The trail offers good views over the north of HK Island, Kowloon and Tai Tam Reservoir.",
+        "regions": {
+            "name": "香港島",
+            "name_en": "Hong Kong Island"
+        },
+        "districts": {
+            "name": "香港島",
+            "name_en": "HK Island"
+        },
+        "height": 9999,
         "distanceInKm": "6",
         "difficulty": 3,
         "durationInHour": "2.5",
