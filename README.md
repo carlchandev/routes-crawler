@@ -1,9 +1,9 @@
 # Hong Kong Hiking Routes Spider
-This spider crawls Hong Kong hiking routes information from website and convert them into json and geojosn files. 
+`routesSpider` crawls data about Hong Kong hiking trails and convert them into json and geojosn files. 
 
 ## Settings
-### Wait 250ms every request
-`DOWNLOAD_DELAY = 0.25`
+### Wait 2 seconds every request
+`DOWNLOAD_DELAY = 2`
 
 ## Run crawler
 `scrapy crawl routes`
@@ -11,7 +11,7 @@ This spider crawls Hong Kong hiking routes information from website and convert 
 ## Run scrapy shell
 `scrapy shell 'http://www.walkonhill.com/route.php?area=1&seq=1'`
 
-## Output result as a json
+## Run crawler and output result as a json
 `rm -f ./kml/**.* && rm -f ./geojson/**.* && rm -f trail-data.json && scrapy crawl routes -o trail-data.json`
 
 ## Convert kml to geojson
